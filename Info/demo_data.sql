@@ -1,5 +1,5 @@
 -- Sử dụng database
-USE guidebook_system;
+USE guidebook_fullstack;
 
 -- ======================================
 -- 1. XÓA TOÀN BỘ CÁC BẢNG (nếu tồn tại)

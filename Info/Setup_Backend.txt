@@ -1,0 +1,108 @@
+# Core dependencies
+npm install express mysql2 cors dotenv
+
+# Development dependencies  
+npm install -D nodemon
+
+Giải thích:
+express: Web framework cho Node.js
+mysql2: Driver kết nối MySQL (faster than mysql)
+cors: Cho phép frontend gọi API từ domain khác
+dotenv: Quản lý environment variables
+nodemon: Auto restart server khi code thay đổi
+
+guidebook-backend/
+├── src/
+│   ├── config/
+│   │   └── database.js
+│   ├── controllers/
+│   │   ├── moduleController.js
+│   │   ├── categoryController.js
+│   │   └── contentController.js
+│   ├── routes/
+│   │   ├── modules.js
+│   │   ├── categories.js
+│   │   └── contents.js
+│   └── app.js
+├── .env
+├── package.json
+└── server.js
+
+
+or 
+
+guidebook-backend/
+├── src/
+│   ├── config/
+│   │   └── database.js
+│   ├── controllers/
+│   │   ├── moduleController.js
+│   │   ├── categoryController.js
+│   │   └── contentController.js
+│   ├── models/
+│   │   ├── moduleModel.js
+│   │   ├── categoryModel.js
+│   │   └── contentModel.js
+│   ├── routes/
+│   │   ├── modules.js
+│   │   ├── categories.js
+│   │   └── contents.js
+│   ├── middleware/
+│   │   ├── errorHandler.js
+│   │   └── asyncHandler.js
+│   ├── utils/
+│   │   └── sanitize.js
+│   └── app.js
+├── uploads/                # lưu file upload
+├── .env
+├── package.json
+└── server.js
+
+npm install express mysql2 dotenv cors multer express-validator sanitize-html html-to-text
+npm install -D nodemon
+
+1. express
+Framework web cho Node.js.
+Giúp tạo server, định nghĩa route (GET /api/modules, POST /api/contents, …).
+Là “xương sống” của backend.
+
+2. mysql2
+Thư viện để kết nối MySQL từ Node.js.
+Ưu điểm: nhanh hơn mysql cũ, hỗ trợ Promise (dễ viết code async/await).
+Dùng để chạy query với database guidebook_system.
+
+3. dotenv
+Quản lý environment variables trong file .env.
+Ví dụ:
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=secret
+DB_NAME=guidebook_system
+PORT=4000
+Giúp tách config ra khỏi code → dễ deploy ở môi trường khác nhau (dev, test, prod).
+
+4. cors
+Cho phép frontend (ví dụ React chạy ở http://localhost:5173) gọi API từ backend (http://localhost:4000).
+Nếu không bật, trình duyệt sẽ chặn vì khác domain.
+
+5. multer
+Middleware để xử lý file upload (ảnh, PDF, Excel...).
+Trong project của bạn: dùng cho bảng media_files hoặc content_images.
+Khi admin upload hình minh họa, multer sẽ nhận file, lưu lên server (hoặc cloud), rồi bạn ghi đường dẫn vào DB.
+
+6. express-validator
+Middleware validate dữ liệu trước khi vào controller.
+Ví dụ: khi tạo module mới → kiểm tra name không rỗng, order_index phải là số.
+Tránh dữ liệu bẩn rơi vào DB.
+
+7. sanitize-html
+Dùng để lọc nội dung HTML từ rich text editor mà admin nhập.
+Chỉ cho phép tag an toàn (<b>, <i>, <img>, <p>, …).
+Ngăn chặn XSS (user chèn <script>alert(1)</script>).
+
+8. html-to-text
+Dùng để chuyển nội dung HTML sang plain text.
+Ví dụ: admin nhập content bằng editor (HTML), bạn lưu HTML vào contents.html_content và đồng thời dùng html-to-text để sinh ra plain text → lưu vào contents.plain_content → phục vụ full-text search nhanh hơn.
+
+9. nodemon: 
+Auto restart server khi code thay đổi
