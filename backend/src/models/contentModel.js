@@ -1,6 +1,7 @@
 const { executeQuery } = require('../config/database');
 
 // 🔹 Lấy tất cả content theo category_id
+// includeUnpublished: có lấy cả những content chưa publish hay không, nếu false thì chỉ lấy những content đã publish
 const findContentsByCategory = async (categoryId, includeUnpublished = false) => {
   const whereClause = includeUnpublished
     ? 'WHERE c.category_id = ?'

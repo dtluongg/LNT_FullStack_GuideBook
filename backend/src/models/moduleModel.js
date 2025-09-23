@@ -29,7 +29,9 @@ const updateModule = async (id, data) => {
   });
   if (!fields.length) return;
   params.push(id);
-  await executeQuery(`UPDATE modules SET ${fields.join(', ')} WHERE id = ?`, params);
+  // await executeQuery(`UPDATE modules SET ${fields.join(', ')} WHERE id = ?`, params);
+  const result = await executeQuery(`UPDATE modules SET ${fields.join(', ')} WHERE id = ?`, params);
+  return result.affectedRows;
 };
 
 const removeModule = async (id) => {
