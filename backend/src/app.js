@@ -4,6 +4,7 @@ const cors = require('cors');
 const moduleRoutes = require('./routes/modules');
 const categoryRoutes = require('./routes/categories');
 const contentRoutes = require('./routes/contents');
+const contentImageRoutes = require('./routes/contentImages')
 
 const app = express();
 
@@ -27,5 +28,10 @@ app.use('/api/contents', (req, res, next) => {
   console.log("➡️ Hit /api/contents");
   next();
 }, contentRoutes);
+
+app.use('/api/images', (req, res, next) => {
+  console.log("➡️ Hit /api/images");
+  next();
+}, contentImageRoutes);
 
 module.exports = app;
