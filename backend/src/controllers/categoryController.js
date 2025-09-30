@@ -1,3 +1,5 @@
+// controllers/categoryController.js
+
 const categoryModel = require('../models/categoryModel');
 
 // Helper: tổ chức categories thành cây cha – con
@@ -43,7 +45,8 @@ const categoryController = {
 
       res.json({
         success: true,
-        data: organizeCategories(categories),
+        // data: organizeCategories(categories),
+        data: categories,
         total: categories.length
       });
     } catch (err) {
