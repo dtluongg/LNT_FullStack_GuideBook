@@ -1,0 +1,269 @@
+{
+  "info": {
+    "name": "Guidebook API",
+    "_postman_id": "abcd1234-5678-efgh-ijkl-987654321",
+    "description": "Postman collection for Guidebook backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Modules",
+      "item": [
+        {
+          "name": "Get All Modules",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/modules"
+          }
+        },
+        {
+          "name": "Get Module By ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/modules/1"
+          }
+        },
+        {
+          "name": "Create Module",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Orders\",\n  \"icon\": \"file-text\",\n  \"order_index\": 1,\n  \"is_active\": true\n}"
+            },
+            "url": "http://localhost:4000/api/modules"
+          }
+        },
+        {
+          "name": "Update Module",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Orders Updated\" }"
+            },
+            "url": "http://localhost:4000/api/modules/1"
+          }
+        },
+        {
+          "name": "Delete Module",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:4000/api/modules/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get Categories by Module",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/categories?module_id=1&include_inactive=true"
+          }
+        },
+        {
+          "name": "Get Category By ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/categories/1"
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"module_id\": 1,\n  \"title\": \"Sales\",\n  \"description\": \"Sales category\",\n  \"order_index\": 1,\n  \"is_active\": true\n}"
+            },
+            "url": "http://localhost:4000/api/categories"
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"title\": \"Sales Updated\" }"
+            },
+            "url": "http://localhost:4000/api/categories/1"
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:4000/api/categories/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contents",
+      "item": [
+        {
+          "name": "Get Contents by Category",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/contents?category_id=1&includeUnpublished=true"
+          }
+        },
+        {
+          "name": "Get Content By ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/contents/1"
+          }
+        },
+        {
+          "name": "Create Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": 1,\n  \"title\": \"How to create order\",\n  \"html_content\": \"<p>Step 1: ...</p>\",\n  \"plain_content\": \"Step 1...\",\n  \"is_published\": true\n}"
+            },
+            "url": "http://localhost:4000/api/contents"
+          }
+        },
+        {
+          "name": "Update Content",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"title\": \"How to create order (updated)\" }"
+            },
+            "url": "http://localhost:4000/api/contents/1"
+          }
+        },
+        {
+          "name": "Delete Content",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:4000/api/contents/1"
+          }
+        },
+        {
+          "name": "Search Content",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/contents/search?q=order"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content Images",
+      "item": [
+        {
+          "name": "Upload Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "sample.png"
+                }
+              ]
+            },
+            "url": "http://localhost:4000/api/images/content/1?categoryId=1&filename=demo"
+          }
+        },
+        {
+          "name": "Get Images by Content",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/images/content/1"
+          }
+        },
+        {
+          "name": "Get Images by Category",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/images/category/1"
+          }
+        },
+        {
+          "name": "Update Image (re-upload)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "new.png"
+                }
+              ]
+            },
+            "url": "http://localhost:4000/api/images/1?categoryId=1&filename=newdemo"
+          }
+        },
+        {
+          "name": "Delete Image",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:4000/api/images/1"
+          }
+        }
+      ]
+    }
+  ]
+}

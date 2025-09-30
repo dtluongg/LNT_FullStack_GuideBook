@@ -1,2 +1,5 @@
 hiện tại đã xong crud của module, category, content. 
 Đang làm image, đã thêm, xoá, lỗi chưa sửa đc theo đường dẫn và tên file theo yêu cầu. 
+
+
+--> hoan thanh 90% backend. xong import image, test xong mudule api.
