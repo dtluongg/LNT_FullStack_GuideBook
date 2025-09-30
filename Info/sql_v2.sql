@@ -1,4 +1,4 @@
--- Sử dụng database
+-- guidebook_fullstack-- Sử dụng database
 USE guidebook_fullstack;
 
 -- ======================================
@@ -91,9 +91,9 @@ CREATE TABLE content_images (
     id INT PRIMARY KEY AUTO_INCREMENT,
     content_id INT,
     image_url VARCHAR(500),
-    alt_text VARCHAR(255),
+    caption VARCHAR(255),
     order_index INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    create_update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (content_id) REFERENCES contents(id) ON DELETE CASCADE
 );
 -- Bảng media_files
