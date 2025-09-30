@@ -4,7 +4,7 @@ const upload = require('../middleware/upload');
 const controller = require('../controllers/contentImageController');
 
 // Upload ảnh mới
-router.post('/category/:categoryId/content/:contentId', upload.single('file'), controller.uploadImage);
+router.post('/content/:contentId', upload.single('file'), controller.uploadImage);
 
 // Lấy ảnh theo content
 router.get('/content/:contentId', controller.getImagesByContent);
