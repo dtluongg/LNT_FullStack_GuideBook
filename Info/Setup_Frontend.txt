@@ -1,0 +1,5 @@
+npm install tailwindcss @tailwindcss/vite
+npm i axios react-router-dom
+
+
+tailwindcss @tailwindcss/vite axios react-router-dom

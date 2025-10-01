@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const moduleRoutes = require('./routes/modules');
 const categoryRoutes = require('./routes/categories');
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "../uploads"))); // phục vụ truy cập file tĩnh từ thư mục uploads
 
 // Debug log khi app khởi động
 console.log("🚀 Mounting routes...");

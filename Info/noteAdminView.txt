@@ -1,0 +1,18 @@
+Tôi muốn cập nhật thêm tất cả các chức năng trong api của category. Sau đó lưu thành file CategoryListAdmin.jsx 
+Tôi muốn chia page đc không? 
+Với trang user view thì sẽ hiển thị tất cả các nội dung hiện tại. Còn admin view sẽ hiện các trang có quản lý tất cả các crud của các mục. 
+
+Luồng admin sẽ như sau:
+├─ api/              # axios calls (giữ nguyên)
+├─ services/         # wrapper logic
+├─ components/       # dùng chung (Header, Navbar,...)
+├─ pages/
+│   ├─ user/
+│   │   ├─ CategoryList.jsx
+│   │   ├─ ContentList.jsx
+│   │   └─ ImageGallery.jsx
+│   └─ admin/
+│       ├─ CategoryListAdmin.jsx   # CRUD category
+│       ├─ ModuleListAdmin.jsx     # CRUD module
+│       ├─ ContentListAdmin.jsx    # CRUD content
+│       └─ ImageManagerAdmin.jsx   # CRUD image

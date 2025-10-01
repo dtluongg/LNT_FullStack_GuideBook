@@ -8,3 +8,8 @@ hiện tại đã xong crud của module, category, content.
 
 ---> hoan thanh 95% backend, test full api vs file sql_v1.sql; chua find đc content, chưa update lại thời gian sau update trong database(cái này k quan trọng, có thể fix sau.)
 ---> trong categoryController.js -> change in row 48 -> 49: show all category without fill lever parent category.
+
+
+---> Run sql_v3.sql để load data mới nhất.
+---> Xong full view for user view.
+---> Category view for admin view. (Xong thêm, xoá, update) -> chưa xong thay đổi thứ tự, inactive
