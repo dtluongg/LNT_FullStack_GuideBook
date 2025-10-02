@@ -13,3 +13,12 @@ hiện tại đã xong crud của module, category, content.
 ---> Run sql_v3.sql để load data mới nhất.
 ---> Xong full view for user view.
 ---> Category view for admin view. (Xong thêm, xoá, update) -> chưa xong thay đổi thứ tự, inactive
+
+
+---> Hoàn thành full crud category, content, image for admin
+---> Công việc cần làm tiếp.
++ Tạo data cho các mục.
++ Tách code thành các lớp cho đỡ dài. 
++ Phân router cho admin và userview.
++ Login for admin and user.
++ Deploy storage database backend and frontend.
