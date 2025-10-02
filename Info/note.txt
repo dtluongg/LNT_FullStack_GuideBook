@@ -17,7 +17,7 @@ hiện tại đã xong crud của module, category, content.
 
 ---> Hoàn thành full crud category, content, image for admin
 ---> Công việc cần làm tiếp.
-+ Tạo data cho các mục.
++ Tạo data cho các mục.   ---  done
 + Tách code thành các lớp cho đỡ dài. 
 + Phân router cho admin và userview.
 + Login for admin and user.

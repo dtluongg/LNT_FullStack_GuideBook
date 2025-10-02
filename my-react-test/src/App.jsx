@@ -5,7 +5,7 @@ import CategoryList from "./components/CategoryList";
 import ContentViewer from "./components/ContentViewer";
 
 const App = () => {
-  const [user] = useState({ name: "Demo User" });
+  const [user] = useState({ name: "Demo Admin" });
   const [activeModule, setActiveModule] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
   const [titleCategory, setTitleCategory] = useState("");

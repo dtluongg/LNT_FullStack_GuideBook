@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getModules } from "../api/modules";
+import {moduleService} from "../services/moduleService";
 
 const Navbar = ({ onSelectModule }) => {
   const [modules, setModules] = useState([]);
   const [activeModule, setActiveModule] = useState(null);
 
   useEffect(() => {
-    getModules().then((res) => setModules(res.data.data));
+    moduleService.list().then((res) => setModules(res || []));
   }, []);
 
   const handleSelect = (m) => {

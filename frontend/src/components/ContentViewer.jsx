@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getContentsByCategory } from '../api/contents';
-import { getImagesByContent } from '../api/images';
+// import { getContentsByCategory } from '../api/contents';
+// import { getImagesByContent } from '../api/images';
 import { IMAGE_BASE_URL } from '../config/config';
+import {contentService} from '../services/contentService';
+import {imageService} from '../services/imageService';
+
 
 const ContentViewer = ({ categoryId, titleCategory }) => {
   const [contents, setContents] = useState([]);
@@ -10,8 +13,8 @@ const ContentViewer = ({ categoryId, titleCategory }) => {
 
   useEffect(() => {
     if (categoryId) {
-      getContentsByCategory(categoryId).then((res) => {
-        const data = res.data.data || [];
+      contentService.listByCategory(categoryId).then((res) => {
+        const data = res || [];
         setContents(data);
         // mặc định mở cái đầu tiên
         if (data.length > 0) {
@@ -23,10 +26,10 @@ const ContentViewer = ({ categoryId, titleCategory }) => {
   }, [categoryId]);
 
   const fetchImages = (contentId) => {
-    getImagesByContent(contentId).then((res) => {
+    imageService.listByContent(contentId).then((res) => {
       setImages((prev) => ({
         ...prev,
-        [contentId]: res.data.data || [],
+        [contentId]: res || [],
       }));
     });
   };
