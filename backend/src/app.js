@@ -6,6 +6,7 @@ const moduleRoutes = require('./routes/modules');
 const categoryRoutes = require('./routes/categories');
 const contentRoutes = require('./routes/contents');
 const contentImageRoutes = require('./routes/contentImages')
+const convertRoutes = require('./routes/convert');
 
 const app = express();
 
@@ -35,5 +36,10 @@ app.use('/api/images', (req, res, next) => {
   console.log("➡️ Hit /api/images");
   next();
 }, contentImageRoutes);
+
+app.use('/api/convert', (req, res, next) => {
+  console.log("➡️ Hit /api/convert");
+  next();
+}, convertRoutes);
 
 module.exports = app;
