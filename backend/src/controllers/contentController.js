@@ -1,6 +1,6 @@
 // src/controllers/contentController.js
 const contentModel = require('../models/contentModel');
-
+const { cleanupContentImages } = require('../middleware/helper');
 const contentController = {
   // 🔹 GET /api/contents?category_id=1&include=all
   getContentsByCategory: async (req, res) => {
@@ -124,6 +124,11 @@ const contentController = {
   deleteContent: async (req, res) => {
     try {
       const { id } = req.params;
+
+      // 1) dọn file ảnh thuộc content
+      await cleanupContentImages(id);
+
+      // 2) xóa content (content_images sẽ tự xóa theo CASCADE)
       const result = await contentModel.removeContent(id);
 
       if (result.affectedRows === 0) {
@@ -135,15 +140,15 @@ const contentController = {
 
       res.json({
         success: true,
-        message: 'Content deleted successfully'
+        message: 'Content deleted successfully (files cleaned)'
       });
-    } catch (err) {
-      console.error('❌ deleteContent error:', err);
-      res.status(500).json({
-        success: false,
-        message: 'Failed to delete content'
-      });
-    }
+      } catch (err) {
+        console.error('❌ deleteContent error:', err);
+        res.status(500).json({
+          success: false,
+          message: 'Failed to delete content'
+        });
+      }
   },
 
   // 🔹 GET /api/contents/search?q=keyword&module_id=1
