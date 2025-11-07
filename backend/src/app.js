@@ -13,8 +13,18 @@ const authUserRoutes = require('./routes/authUser');
 
 const app = express();
 
-app.use(helmet({ contentSecurityPolicy: false }));
-app.use(cors());
+// app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }, // cho phép nhúng ảnh từ origin khác
+  crossOriginEmbedderPolicy: false, // tránh chặn nhúng khi dev
+}));
+// app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:4001", "http://localhost:4002"], // sửa theo port của bạn
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: true
+}));
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads"))); // phục vụ truy cập file tĩnh từ thư mục uploads
 
