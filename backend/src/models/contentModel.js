@@ -11,6 +11,7 @@ const findContentsByCategory = async (categoryId, includeUnpublished = false) =>
     SELECT 
       c.id,
       c.category_id,
+      c.parent_id,
       c.title,
       c.html_content,
       c.plain_content,
@@ -35,6 +36,7 @@ const findContentById = async (id) => {
     SELECT 
       c.id,
       c.category_id,
+      c.parent_id,
       c.title,
       c.html_content,
       c.plain_content,
@@ -54,20 +56,21 @@ const findContentById = async (id) => {
 };
 
 // 🔹 Tạo content mới
-const createContent = async ({ category_id, title, html_content, plain_content, is_published = true }) => {
-  // tìm order_index lớn nhất để +1
+const createContent = async ({ category_id, parent_id = null, title, html_content, plain_content, is_published = true }) => {
+  // tính order_index theo cùng category AND cùng parent_id (sibling group)
   const maxOrderRes = await executeQuery(
-    'SELECT MAX(order_index) as max_order FROM contents WHERE category_id = ?',
-    [category_id]
+    'SELECT MAX(order_index) as max_order FROM contents WHERE category_id = ? AND (parent_id = ? OR (parent_id IS NULL AND ? IS NULL))',
+    [category_id, parent_id, parent_id]
   );
   const nextOrderIndex = (maxOrderRes[0]?.max_order ?? -1) + 1;
 
   const query = `
-    INSERT INTO contents (category_id, title, html_content, plain_content, is_published, order_index)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO contents (category_id, parent_id, title, html_content, plain_content, is_published, order_index)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
   const result = await executeQuery(query, [
     category_id,
+    parent_id,
     title,
     html_content || '',
     plain_content || '',
@@ -82,7 +85,8 @@ const updateContent = async (id, data) => {
   const fields = [];
   const params = [];
 
-  ['title', 'html_content', 'plain_content', 'is_published', 'order_index'].forEach((key) => {
+  // Only allow updating the following safe fields via API
+  ['title', 'html_content', 'plain_content', 'is_published'].forEach((key) => {
     if (data[key] !== undefined) {
       fields.push(`${key} = ?`);
       params.push(data[key]);
@@ -113,6 +117,7 @@ const searchContents = async (keyword, moduleId = null) => {
     SELECT 
       c.id,
       c.category_id,
+      c.parent_id,
       c.title,
       c.plain_content,
       c.view_count,
@@ -138,6 +143,51 @@ const searchContents = async (keyword, moduleId = null) => {
   return await executeQuery(query, params);
 };
 
+// Helper: trả về cấu trúc cây content theo category
+const getContentsTreeByCategory = async (categoryId, includeUnpublished = false) => {
+  const whereClause = includeUnpublished
+    ? 'WHERE c.category_id = ?'
+    : 'WHERE c.category_id = ? AND c.is_published = true';
+
+  const query = `
+    SELECT 
+      c.id,
+      c.category_id,
+      c.parent_id,
+      c.title,
+      c.html_content,
+      c.plain_content,
+      c.is_published,
+      c.view_count,
+      c.order_index,
+      c.create_update_at,
+      cat.title AS category_title,
+      m.name AS module_name
+    FROM contents c
+    JOIN categories cat ON c.category_id = cat.id
+    JOIN modules m ON cat.module_id = m.id
+    ${whereClause}
+    ORDER BY c.order_index ASC, c.create_update_at ASC
+  `;
+
+  const rows = await executeQuery(query, [categoryId]);
+  const nodesById = {};
+  rows.forEach(r => {
+    nodesById[r.id] = { ...r, children: [] };
+  });
+  const roots = [];
+  rows.forEach(r => {
+    const node = nodesById[r.id];
+    if (r.parent_id && nodesById[r.parent_id]) {
+      nodesById[r.parent_id].children.push(node);
+    } else {
+      roots.push(node);
+    }
+  });
+
+  return roots;
+};
+
 module.exports = {
   findContentsByCategory,
   findContentById,
@@ -146,4 +196,5 @@ module.exports = {
   removeContent,
   incrementViewCount,
   searchContents
+  ,getContentsTreeByCategory
 };

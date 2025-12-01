@@ -7,6 +7,10 @@ export const getContents = (categoryId, includeUnpublished = false) =>
 export const getContentsByCategory = (categoryId, includeUnpublished = false) =>
   api.get(`/contents?category_id=${categoryId}&includeUnpublished=${includeUnpublished}`);
 
+// GET tree structure (hierarchical) for a category
+export const getContentsTree = (categoryId, includeUnpublished = false) =>
+  api.get(`/contents/tree/${categoryId}${includeUnpublished ? '?include=all' : ''}`);
+
 // GET by ID
 export const getContentById = (id) => api.get(`/contents/${id}`);
 

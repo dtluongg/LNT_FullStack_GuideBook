@@ -10,6 +10,9 @@ router.get('/', contentController.getContentsByCategory);
 // router.get('/:id') bắt nhầm (ví dụ '/search' sẽ bị coi là id = 'search')
 router.get('/search', contentController.searchContents);
 
+// 🔹 Lấy cây content theo category
+router.get('/tree/:categoryId', contentController.getContentsTreeByCategory);
+
 // 🔹 Lấy content theo ID
 router.get('/:id', contentController.getContentById);
 

@@ -34,6 +34,23 @@ const contentController = {
     }
   },
 
+  // 🔹 GET /api/contents/tree/:categoryId
+  getContentsTreeByCategory: async (req, res) => {
+    try {
+      const { categoryId } = req.params;
+      const { include } = req.query;
+      if (!categoryId) {
+        return res.status(400).json({ success: false, message: 'categoryId is required' });
+      }
+      const includeUnpublished = include === 'all';
+      const tree = await contentModel.getContentsTreeByCategory(categoryId, includeUnpublished);
+      return res.json({ success: true, data: tree, total: tree.length });
+    } catch (err) {
+      console.error('❌ getContentsTreeByCategory error:', err);
+      return res.status(500).json({ success: false, message: 'Failed to get contents tree' });
+    }
+  },
+
   // 🔹 GET /api/contents/:id
   getContentById: async (req, res) => {
     try {
@@ -63,34 +80,36 @@ const contentController = {
   // 🔹 POST /api/contents
   createContent: async (req, res) => {
     try {
-      const { category_id, title, html_content, plain_content, is_published } = req.body;
+      const { category_id, parent_id = null, title, html_content, plain_content, is_published } = req.body;
 
       if (!category_id || !title) {
-        return res.status(400).json({
-          success: false,
-          message: 'category_id and title are required'
-        });
+        return res.status(400).json({ success: false, message: 'category_id and title are required' });
+      }
+
+      // nếu có parent_id thì validate parent tồn tại và thuộc cùng category
+      if (parent_id) {
+        const parent = await contentModel.findContentById(parent_id);
+        if (!parent) {
+          return res.status(400).json({ success: false, message: 'parent_id not found' });
+        }
+        if (String(parent.category_id) !== String(category_id)) {
+          return res.status(400).json({ success: false, message: 'parent must belong to the same category' });
+        }
       }
 
       const newId = await contentModel.createContent({
         category_id,
+        parent_id,
         title,
         html_content,
         plain_content,
         is_published
       });
 
-      res.status(201).json({
-        success: true,
-        message: 'Content created successfully',
-        data: { id: newId, category_id, title, is_published }
-      });
+      res.status(201).json({ success: true, message: 'Content created successfully', data: { id: newId, category_id, parent_id, title, is_published } });
     } catch (err) {
       console.error('❌ createContent error:', err);
-      res.status(500).json({
-        success: false,
-        message: 'Failed to create content'
-      });
+      res.status(500).json({ success: false, message: 'Failed to create content' });
     }
   },
 
@@ -98,7 +117,18 @@ const contentController = {
   updateContent: async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await contentModel.updateContent(id, req.body);
+      // Only allow updating safe fields via API
+      const allowed = ['title', 'html_content', 'plain_content', 'is_published'];
+      const payload = {};
+      allowed.forEach((k) => {
+        if (req.body[k] !== undefined) payload[k] = req.body[k];
+      });
+
+      if (Object.keys(payload).length === 0) {
+        return res.status(400).json({ success: false, message: 'No updatable fields provided' });
+      }
+
+      const result = await contentModel.updateContent(id, payload);
 
       if (result.affectedRows === 0) {
         return res.status(404).json({

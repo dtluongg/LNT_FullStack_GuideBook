@@ -144,6 +144,13 @@
           }
         },
         {
+          "name": "Get Contents Tree",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:4000/api/contents/tree/1"
+          }
+        },
+        {
           "name": "Create Content",
           "request": {
             "method": "POST",
@@ -161,6 +168,23 @@
           }
         },
         {
+          "name": "Create Child Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": 1,\n  \"parent_id\": 1,\n  \"title\": \"Child of 1\",\n  \"html_content\": \"<p>Child content</p>\",\n  \"plain_content\": \"Child\",\n  \"is_published\": true\n}"
+            },
+            "url": "http://localhost:4000/api/contents"
+          }
+        },
+        {
           "name": "Update Content",
           "request": {
             "method": "PUT",
@@ -172,7 +196,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{ \"title\": \"How to create order (updated)\" }"
+              "raw": "{ \"title\": \"How to create order (updated)\", \"html_content\": \"<p>Updated content</p>\", \"plain_content\": \"Updated\", \"is_published\": true }"
             },
             "url": "http://localhost:4000/api/contents/1"
           }
